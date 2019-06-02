@@ -1,0 +1,269 @@
+#!/bin/bash
+
+
+
+usage(){
+    echo -e "Usage: $0 [OPTIONS 1] [OPTIONS 2] [OPTIONS 3] [OPTIONS 4] [filePath]"
+	echo -e "Options and variables: [defaults in brackets]"
+
+        echo -e " -H, --help         display help info . "
+	    echo -e " -V, --version         output version information and exit . "
+        echo -e " -P, --plan         show all compression plans . "
+        echo -e " -I, --install         install zippeiQ . "
+        echo -e "                       (default in version 1.3.1)"
+	    echo -e " -C, --compress         compress the file . "
+	    echo -e "                        (default to chose the highest compression rate format)"
+	    echo -e " -U, --uncompress         compress the file according to the compressed format . "
+        echo -e " -T, --time         show the compression/uncompression time . "
+        echo -e "                    (disable by default)"
+
+        echo -e "Options in compression: [used in compress]"
+	    echo -e " -D, --deflate         use the deflate algorithm to compress files . "
+	    echo -e " -L, --lz4         use the lz4 algorithm to compress files . "
+	    echo -e " -S, --snappy         use the snappy algorithm to compress files . "
+        echo -e " -R, --rate         show the compression rate . "
+        echo -e "                    (disable by default, used along with -C --compress)"
+        echo -e "                                      "
+
+exit 1
+}
+
+compile(){
+    echo -e " /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/bin/java -Dmaven.multiModuleProjectDirectory=/src"
+    echo -e "  -Dmaven.home=/Applications/IntelliJ IDEA.app/Contents/plugins/maven/lib/maven3"
+    echo -e "  -Dclassworlds.conf=/Applications/IntelliJ IDEA.app/Contents/plugins/maven/lib/maven3/bin/m2.conf"
+    echo -e "  -javaagent:/Applications/IntelliJ IDEA.app/Contents/lib/idea_rt.jar=57645:/Applications/IntelliJ IDEA.app/Contents/bin"
+    echo -e "  -Dfile.encoding=UTF-8 -classpath /Applications/IntelliJ IDEA.app/Contents/plugins/maven/lib/maven3/boot/plexus-classworlds-2.5.2.jar org.codehaus.classworlds.Launcher -Didea.version=2018.2.4 install"
+    echo -e " [INFO] Scanning for projects..."
+    sleep 1
+    echo -e " [WARNING]  "
+    echo -e " [WARNING] Some problems were encountered while building the effective model for chenpeiqi:compress_and_decompress:jar:1.0-SNAPSHOT  "
+    echo -e " [WARNING] 'build.plugins.plugin.version' for org.apache.tomcat.maven:tomcat7-maven-plugin is missing. @ line 49, column 21"
+    echo -e " [WARNING]  "
+    sleep 1
+    echo -e " [INFO]  "
+    echo -e " [INFO] ------------------------------------------------------------------------"
+    echo -e " [INFO] Building compress_and_decompress 1.0-SNAPSHOT "
+    echo -e " [INFO] ------------------------------------------------------------------------"
+    sleep 2
+    echo -e " [INFO] --- maven-resources-plugin:2.6:resources (default-resources) @ compress_and_decompress --- "
+    echo -e " [WARNING]  Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!"
+    echo -e " [INFO] --- maven-compiler-plugin:3.1:compile (default-compile) @ compress_and_decompress --- "
+    sleep 1
+    echo -e " [INFO] --- maven-resources-plugin:2.6:testResources (default-testResources) @ compress_and_decompress --- "
+    echo -e " [INFO] --- maven-jar-plugin:2.4:jar (default-jar) @ compress_and_decompress --- "
+    echo -e " [INFO] Including net.jpountz.lz4:lz4:jar:1.3.0 in the shaded jar."
+    echo -e " [INFO] Including org.xerial.snappy:snappy-java:jar:1.1.2.5 in the shaded jar."
+    sleep 1
+    echo -e " [INFO] Including org.apache.maven.plugins:maven-shade-plugin:jar:2.4.2 in the shaded jar."
+    echo -e " [INFO] Including org.apache.maven:maven-plugin-api:jar:3.0 in the shaded jar."
+    echo -e " [INFO] Including org.sonatype.sisu:sisu-inject-plexus:jar:1.4.2 in the shaded jar."
+    sleep 1
+    echo -e " [INFO] Including org.sonatype.sisu:sisu-inject-bean:jar:1.4.2 in the shaded jar."
+    echo -e " [INFO] Including org.sonatype.sisu:sisu-guice:jar:noaop:2.1.7 in the shaded jar."
+    sleep 1
+    echo -e " [INFO] Including org.apache.maven:maven-model:jar:3.0 in the shaded jar."
+    echo -e " [INFO] Including org.apache.maven:maven-core:jar:3.0 in the shaded jar."
+    echo -e " [INFO] Including org.apache.maven:maven-settings:jar:3.0 in the shaded jar."
+    echo -e " [INFO] Including org.apache.maven:maven-settings-builder:jar:3.0 in the shaded jar."
+    echo -e " [INFO] Including org.apache.maven:maven-repository-metadata:jar:3.0 in the shaded jar."
+    echo -e " [INFO] Including org.apache.maven:maven-model-builder:jar:3.0 in the shaded jar."
+    sleep 1
+    echo -e " [INFO] Including org.apache.maven:maven-aether-provider:jar:3.0 in the shaded jar."
+    echo -e " [INFO] Including org.sonatype.aether:aether-impl:jar:1.7 in the shaded jar."
+    echo -e " [INFO] Including org.sonatype.aether:aether-spi:jar:1.7 in the shaded jar."
+    echo -e " [INFO] Including org.sonatype.aether:aether-api:jar:1.7 in the shaded jar."
+    echo -e " [INFO] Including org.sonatype.aether:aether-util:jar:1.7 in the shaded jar."
+    sleep 1
+    echo -e " [INFO] Including org.codehaus.plexus:plexus-interpolation:jar:1.14 in the shaded jar."
+    echo -e " [INFO] Including org.codehaus.plexus:plexus-classworlds:jar:2.2.3 in the shaded jar."
+    echo -e " [INFO] Including org.codehaus.plexus:plexus-component-annotations:jar:1.5.5 in the shaded jar."
+    echo -e " [INFO] Including org.sonatype.plexus:plexus-sec-dispatcher:jar:1.3 in the shaded jar."
+    echo -e " [INFO] Including org.sonatype.plexus:plexus-cipher:jar:1.4 in the shaded jar."
+    echo -e " [INFO] Including org.apache.maven:maven-compat:jar:3.0 in the shaded jar."
+    sleep 1
+    echo -e " [INFO] Including org.apache.maven.wagon:wagon-provider-api:jar:1.0-beta-6 in the shaded jar."
+    echo -e " [INFO] Including org.apache.maven:maven-artifact:jar:3.0 in the shaded jar."
+    sleep 1
+    echo -e " [INFO] Including org.codehaus.plexus:plexus-utils:jar:3.0.22 in the shaded jar."
+    echo -e " [INFO] Including org.ow2.asm:asm:jar:5.0.2 in the shaded jar."
+    echo -e " [INFO] Including org.ow2.asm:asm-commons:jar:5.0.2 in the shaded jar."
+    echo -e " [INFO] Including org.ow2.asm:asm-tree:jar:5.0.2 in the shaded jar."
+    echo -e " [INFO] Including org.jdom:jdom:jar:1.1 in the shaded jar."
+    sleep 1
+    echo -e " [INFO] Including org.apache.maven.shared:maven-dependency-tree:jar:2.2 in the shaded jar."
+    echo -e " [INFO] Including org.eclipse.aether:aether-util:jar:0.9.0.M2 in the shaded jar."
+    echo -e " [INFO] Including commons-io:commons-io:jar:2.2 in the shaded jar."
+    echo -e " [INFO] Including org.vafer:jdependency:jar:1.0 in the shaded jar."
+    echo -e " [INFO] Including org.ow2.asm:asm-analysis:jar:5.0.3 in the shaded jar."
+    sleep 2
+    echo -e " [INFO] Including org.ow2.asm:asm-util:jar:5.0.3 in the shaded jar."
+    echo -e " [INFO] Including com.google.guava:guava:jar:11.0.2 in the shaded jar."
+    sleep 1
+    echo -e " [INFO] Including com.google.code.findbugs:jsr305:jar:1.3.9 in the shaded jar."
+    sleep 1
+    echo -e " [INFO] Replacing original artifact with shaded artifact."
+    sleep 1
+    echo -e " [INFO] ------------------------------------------------------------------------"
+    echo -e " BUILD SUCCESS"
+    echo -e " [INFO] ------------------------------------------------------------------------"
+    sleep 2
+    echo -e " [ERROR] ------------------------------------------------------------------------"
+    echo -e " [ERROR] 手动模拟下载，仅供娱乐交流"
+    echo -e " [ERROR] ------------------------------------------------------------------------"
+exit 1
+}
+showVersion(){
+echo -e " zippeiQ  1.3.0  (default, May 21 2019) "
+exit 1
+}
+
+plan(){
+    java -jar compress_and_decompress-1.0-SNAPSHOT.jar -p $path
+exit 1
+}
+paraC(){
+    java -jar compress_and_decompress-1.0-SNAPSHOT.jar -c $path
+exit 1
+}
+paraU(){
+    java -jar compress_and_decompress-1.0-SNAPSHOT.jar -u $path
+exit 1
+}
+paraCX(){
+[[ $paras =~ "-D" ]] && java -jar compress_and_decompress-1.0-SNAPSHOT.jar -c -d $path
+[[ $paras =~ "--deflate" ]] && java -jar compress_and_decompress-1.0-SNAPSHOT.jar -c -d $path
+
+[[ $paras =~ "-L" ]] && java -jar compress_and_decompress-1.0-SNAPSHOT.jar -c -l $path
+[[ $paras =~ "--lz4" ]] && java -jar compress_and_decompress-1.0-SNAPSHOT.jar -c -l $path
+
+[[ $paras =~ "-S" ]] && java -jar compress_and_decompress-1.0-SNAPSHOT.jar -c -s $path
+[[ $paras =~ "-snappy" ]] && java -jar compress_and_decompress-1.0-SNAPSHOT.jar -c -s $path
+
+[[ $paras =~ "-R" ]] && java -jar compress_and_decompress-1.0-SNAPSHOT.jar -c -r $path
+[[ $paras =~ "-rate" ]] && java -jar compress_and_decompress-1.0-SNAPSHOT.jar -c -r $path
+
+[[ $paras =~ "-T" ]] && java -jar compress_and_decompress-1.0-SNAPSHOT.jar -c -t $path
+[[ $paras =~ "-time" ]] && java -jar compress_and_decompress-1.0-SNAPSHOT.jar -c -t $path
+exit 1
+}
+
+paraUT(){
+java -jar compress_and_decompress-1.0-SNAPSHOT.jar -u -t $path
+exit 1
+}
+
+paraCXX(){
+[[ $paras =~ "-D" && $paras =~ "-R" ]] && java -jar compress_and_decompress-1.0-SNAPSHOT.jar -c -d -r $path
+[[ $paras =~ "--deflate" && $paras =~ "-R" ]] && java -jar compress_and_decompress-1.0-SNAPSHOT.jar -c -d -r $path
+[[ $paras =~ "-D" && $paras =~ "--rate" ]] && java -jar compress_and_decompress-1.0-SNAPSHOT.jar -c -d -r $path
+[[ $paras =~ "--deflate" && $paras =~ "--rate" ]] && java -jar compress_and_decompress-1.0-SNAPSHOT.jar -c -d -r $path
+[[ $paras =~ "-D" && $paras =~ "-T" ]] && java -jar compress_and_decompress-1.0-SNAPSHOT.jar -c -d -t $path
+[[ $paras =~ "--deflate" && $paras =~ "-T" ]] && java -jar compress_and_decompress-1.0-SNAPSHOT.jar -c -d -t $path
+[[ $paras =~ "-D" && $paras =~ "--time" ]] && java -jar compress_and_decompress-1.0-SNAPSHOT.jar -c -d -t $path
+[[ $paras =~ "--deflate" && $paras =~ "--time" ]] && java -jar compress_and_decompress-1.0-SNAPSHOT.jar -c -d -t $path
+
+[[ $paras =~ "-L" && $paras =~ "-R" ]] && java -jar compress_and_decompress-1.0-SNAPSHOT.jar -c -l -r $path
+[[ $paras =~ "--lz4" && $paras =~ "-R" ]] && java -jar compress_and_decompress-1.0-SNAPSHOT.jar -c -l -r $path
+[[ $paras =~ "-L" && $paras =~ "--rate" ]] && java -jar compress_and_decompress-1.0-SNAPSHOT.jar -c -l -r $path
+[[ $paras =~ "--lz4" && $paras =~ "--rate" ]] && java -jar compress_and_decompress-1.0-SNAPSHOT.jar -c -l -r $path
+[[ $paras =~ "-L" && $paras =~ "-T" ]] && java -jar compress_and_decompress-1.0-SNAPSHOT.jar -c -l -t $path
+[[ $paras =~ "--lz4" && $paras =~ "-T" ]] && java -jar compress_and_decompress-1.0-SNAPSHOT.jar -c -l -t $path
+[[ $paras =~ "-L" && $paras =~ "--time" ]] && java -jar compress_and_decompress-1.0-SNAPSHOT.jar -c -l -t $path
+[[ $paras =~ "--lz4" && $paras =~ "--time" ]] && java -jar compress_and_decompress-1.0-SNAPSHOT.jar -c -l -t $path
+
+[[ $paras =~ "-S" && $paras =~ "-R" ]] && java -jar compress_and_decompress-1.0-SNAPSHOT.jar -c -s -r $path
+[[ $paras =~ "--snappy" && $paras =~ "-R" ]] && java -jar compress_and_decompress-1.0-SNAPSHOT.jar -c -s -r $path
+[[ $paras =~ "-S" && $paras =~ "--rate" ]] && java -jar compress_and_decompress-1.0-SNAPSHOT.jar -c -s -r $path
+[[ $paras =~ "--deflate" && $paras =~ "--rate" ]] && java -jar compress_and_decompress-1.0-SNAPSHOT.jar -c -s -r $path
+[[ $paras =~ "-snappy" && $paras =~ "-T" ]] && java -jar compress_and_decompress-1.0-SNAPSHOT.jar -c -s -t $path
+[[ $paras =~ "--deflate" && $paras =~ "-T" ]] && java -jar compress_and_decompress-1.0-SNAPSHOT.jar -c -s -t $path
+[[ $paras =~ "-S" && $paras =~ "--time" ]] && java -jar compress_and_decompress-1.0-SNAPSHOT.jar -c -s -t $path
+[[ $paras =~ "--snappy" && $paras =~ "--time" ]] && java -jar compress_and_decompress-1.0-SNAPSHOT.jar -c -s -t $path
+
+[[ $paras =~ "-T" && $paras =~ "-R" ]] && java -jar compress_and_decompress-1.0-SNAPSHOT.jar -c -r -t $path
+[[ $paras =~ "--time" && $paras =~ "-R" ]] && java -jar compress_and_decompress-1.0-SNAPSHOT.jar -c -r -t $path
+[[ $paras =~ "-T" && $paras =~ "--rate" ]] && java -jar compress_and_decompress-1.0-SNAPSHOT.jar -c -r -t $path
+[[ $paras =~ "--time" && $paras =~ "--rate" ]] && java -jar compress_and_decompress-1.0-SNAPSHOT.jar -c -r -t $path
+exit 1
+}
+
+paraCXRT(){
+[[ $paras =~ "-D" ]] && java -jar compress_and_decompress-1.0-SNAPSHOT.jar -c -d -r -t $path
+[[ $paras =~ "--deflate" ]] && java -jar compress_and_decompress-1.0-SNAPSHOT.jar -c -d -r -t $path
+
+[[ $paras =~ "-L" ]] && java -jar compress_and_decompress-1.0-SNAPSHOT.jar -c -l -r -t $path
+[[ $paras =~ "--lz4" ]] && java -jar compress_and_decompress-1.0-SNAPSHOT.jar -c -l -r -t $path
+
+[[ $paras =~ "-S" ]] && java -jar compress_and_decompress-1.0-SNAPSHOT.jar -c -s -r -t $path
+[[ $paras =~ "-snappy" ]] && java -jar compress_and_decompress-1.0-SNAPSHOT.jar -c -s -r -t $path
+
+[[ $paras =~ "-R" ]] && java -jar compress_and_decompress-1.0-SNAPSHOT.jar -c -r -r -t $path
+[[ $paras =~ "-rate" ]] && java -jar compress_and_decompress-1.0-SNAPSHOT.jar -c -r -r -t $path
+
+[[ $paras =~ "-T" ]] && java -jar compress_and_decompress-1.0-SNAPSHOT.jar -c -t -r -t $path
+[[ $paras =~ "-time" ]] && java -jar compress_and_decompress-1.0-SNAPSHOT.jar -c -t -r -t $path
+exit 1
+}
+
+
+paras=${@:1:$#}
+len=$#
+path=${!len}
+OLD_IFS="$IFS"
+IFS=" "
+paras=${@:1:$#}
+arr=($paras)
+IFS="$OLD_IFS"
+#for s in ${arr[@]}
+#do
+#echo "$s"
+#done
+while :
+do
+    case $1 in
+        -H|--help)
+            usage
+            shift 1
+            ;;
+        -V|--version)
+            showVersion
+            shift 1
+            ;;
+        -I|--install)
+            compile
+            shift 1
+            ;;
+        -P|--plan)
+            plan
+            shift 1
+            ;;
+    esac
+
+if [ $len == 2 ]
+then
+    if [[ ${arr[0]} == "-C" || ${arr[0]} == "--compress" ]]
+    then
+    paraC
+    elif [[ ${arr[0]} == "-U" || ${arr[0]} == "--uncompress" ]]
+    then
+    paraU
+    fi
+
+elif [ $len == 3 ]
+then
+[[ $paras =~ "-C" ]] && paraCX
+[[ $paras =~ "--compress" ]] && paraCX
+
+[[ $paras =~ "-U" ]] && paraUT
+[[ $paras =~ "--uncompress" ]] && paraUT
+
+elif [ $len == 4 ]
+then
+paraCXX
+elif [ $len == 5 ]
+then
+paraCXRT
+
+fi
+done
